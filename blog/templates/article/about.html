@@ -1,0 +1,51 @@
+{% extends 'article/base.html' %}
+
+{% load static from staticfiles %}
+
+{% block linkscript %}
+    <link rel="stylesheet" type="text/css" href="{% static '/css/about.css' %}">
+{% endblock linkscript %}
+
+{% block content %}
+    <div class="banner">
+        <p data-scroll-reveal="enter top over 2s" style="font-size: 25px">if equal affection cannot be, let the more loving one be me.</p>
+        <p data-scroll-reveal="enter left over 2s after 1s"></p>
+        <p data-scroll-reveal="enter bottom over 2s after 2s"></p>
+    </div>
+    <div class="memorial_day">
+        <div class="time_axis"></div>
+        <ul>
+            <li class="n1"><a href="#">c语言入门</a>
+                <div class="dateview">2017-07</div>
+            </li>
+            <li class="n2"><a href="#">java入门</a>
+                <div class="dateview">2017-09</div>
+            </li>
+            <li class="n3"><a href="#">人生苦短 我用python</a>
+                <div class="dateview">2017-12</div>
+            </li>
+            <li class="n4"><a href="#">学习前端</a>
+                <div class="dateview">2018-04</div>
+            </li>
+            <li class="n5"><a href="#">我正在努力</a>
+                <div class="dateview">Now</div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="about">
+        <h2>Just about me</h2>
+        <ul>
+            <p>
+                我是广东药科大学中山校区树莓专业的学生，现在还没有毕业，广州人。刚高考完的时候，也不知道要报什么专业，也没有方向，只是想着只要和计算机有关就行，还有就是最好离家比较近，就随便找了几个和计算机有点关联的专业来报。其实呢，原本是想在广州大学城校区读的，根本没想过要来中山。一开始看见树莓这个专业写着中山校区，我当时想，中山大学在广州，那中山校区岂不是也...好吧，然后发现原来是两个不同的城市，所以我就来到中山了。</p>
+            <p>
+                第一次做web网站，做的不好还请多多包涵，如果有其他问题也可以留言，或者加我的qq：1564649449，希望可以共同交流，共同学习。</p>
+        </ul>
+        <h2>About my blog</h2>
+        <p>域 名：www.fatalblow.top</p>
+        <p>服务器：阿里云服务器</p>
+    </div>
+
+
+{% endblock content %}
+

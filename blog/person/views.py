@@ -161,3 +161,10 @@ def detail(request, id):
         'meta_category': meta_category
     }
     return render(request, 'article/detail.html', context)
+
+
+def handler_404(request, **kwargs):
+    return render(request, 'handler_404.html')
+
+def handler_500(request):
+    return render(request, 'handler_404.html')

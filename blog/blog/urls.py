@@ -26,6 +26,10 @@ urlpatterns = [
     path('search/', include('haystack.urls')),
 ]
 
+handler404 = 'person.views.handler_404'
+handler500 = 'person.views.handler_500'
+
+
 if settings.DEBUG:
     # static files (images, css, javascript, etc.)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

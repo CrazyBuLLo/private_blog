@@ -1,0 +1,93 @@
+部署网站，用redis作为缓存
+
+在阿里云服务器centos中安装redis：
+
+	(redis 下载 https://redis.io/download)
+	wget http://download.redis.io/releases/redis-3.2.6.tar.gz
+
+	(解压缩)
+	tar xzf redis-3.2.6.tar.gz
+
+	(进入解压后的文件目录)
+	cd redis-3.2.6
+
+	(redis安装相对简单 直接编译即可)
+	make
+
+	make install
+
+	(创建存储redis文件目录)
+	mkdir -p /usr/local/redis
+
+	cd src/
+
+	(复制redis-server redis-cli到新建立的文件夹)
+	cp ./redis-server /usr/local/redis/
+	cp ./redis-cli /usr/local/redis/
+
+	(复制redis的配置文件)
+	cd ..
+	cp redis.conf /usr/local/redis/
+
+	(编辑配置文件)
+	cd /usr/local/redis/
+	vim redis.conf   (将daemonize中的no改成yes，这样redis启动就会在后台运行)
+
+	ln -s /usr/local/redis/redis-cli /usr/bin/redis
+
+	(以redis.conf的配置启动redis)
+	/usr/bin/redis /usr/local/redis/redis.conf
+
+	ps -ef|grep redis  (看redis是否在后台运行)
+
+
+在django中加入以下代码
+	在settings.py文件中添加一下配置
+	CACHES = {
+	    'default': {
+	        'BACKEND': 'django_redis.cache.RedisCache',
+	        'LOCATION': 'redis://127.0.0.1:6379',
+	        "OPTIONS": {
+	            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+	        },
+	    },
+	}
+
+	settings.py中间件设置
+	MIDDLEWARE = [
+        'django.middleware.cache.UpdateCacheMiddleware',
+        # 其他中间件...
+        'django.middleware.cache.FetchFromCacheMiddleware',
+    ]
+		
+
+	作为 session backend 使用配置
+	SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+	SESSION_CACHE_ALIAS = "default"
+
+
+	在views.py中加入以下代码
+	def expire_view_cache(path, servername, serverport, key_prefix=None):
+	    '''
+	    刷新视图缓存
+	    :param path:url路径
+	    :param servername:host
+	    :param serverport:端口
+	    :param key_prefix:前缀
+	    :return:是否成功
+	    '''
+	    from django.http import HttpRequest
+	    from django.utils.cache import get_cache_key
+
+	    request = HttpRequest()
+	    request.META = {'SERVER_NAME': servername, 'SERVER_PORT': serverport}
+	    request.path = path
+
+	    key = get_cache_key(request, key_prefix=key_prefix, cache=cache)
+	    if key:
+	        logger.info('expire_view_cache:get key:{path}'.format(path=path))
+	        if cache.get(key):
+	            cache.delete(key)
+	        return True
+	    return False
+

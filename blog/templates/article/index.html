@@ -90,12 +90,12 @@
                 //刷新文章
                 $('.tmtimeline li').remove();
                 for (var i = 0; i < data.result.length; i++) {
-
+                    console.log(data.result[i][8]);
                     $('.tmtimeline').append('<li><div class="row"><div class="col-lg-3 col-md-3 col-sm-3 col-xs-3"> <time class="tmtime"> <span>'
                         + data.result[i][0] +
                         '</span> <span>'
                         + data.result[i][1] +
-                        '</span> </time> <div class="tmicon"></div> </div> <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9" data-scroll-reveal="enter right and move 50px over 1.2s"> <div class="tmlabel"> <h3>'
+                        '</span> </time> <div class="tmicon"></div> </div> <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9" data-scroll-reveal="enter right and move 50px over 1.2s"> <div class="tmlabel"> <h3 class="articletitle">'
                         + data.result[i][2] +
                         '</h3> <div class="row"> <img src="/media/'
                         + data.result[i][3] +
@@ -103,7 +103,14 @@
                         + data.result[i][4] +
                         '...</div> </div> <a href="/detail/'
                         + data.result[i][5] +
-                        '/" class="readmore">阅读全文&gt;&gt;</a> </div> </div> </div> </li>'
+                        '/" class="readmore">阅读全文&gt;&gt;</a> <a href="/stayhungry/'
+                        + data.result[i][8] +
+                        '/1/" class="tagpos">'
+                        + data.result[i][7] +
+                        '</a> <div class="clicknum">点击量:' +
+                        + data.result[i][6] +
+                        '</div> </div> </div> </div> </li>'
+
                     );
                 }
                 //刷新页码

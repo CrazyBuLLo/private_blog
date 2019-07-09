@@ -7,8 +7,9 @@ from .models import *
 import markdown
 import re
 import json
+from django.views.decorators.cache import cache_page
 
-
+@cache_page(60*15)
 def index(request):
     change_info(request)
     return render(request, 'article/index.html')
@@ -41,6 +42,13 @@ def pageAjax(request):
             temp = dr.sub('', temp).replace('\n', '').replace(' ', '')
             array.append(temp[0:95])
             array.append(p.id) # 文章的id
+
+            array.append(str(p.clickNums))
+
+            tags = Article.objects.filter(id=int(p.id))[0].tag.all()[0].tname
+            tag_id = Article.objects.filter(id=int(p.id))[0].tag.all()[0].id
+            array.append(str(tags))
+            array.append(tag_id)
             result.append(array)
             array = []
         context = {
@@ -85,7 +93,7 @@ def chartInfo(request): # 饼图ajax请求数据
 
 
 
-
+@cache_page(60*15)
 def about(request):
     change_info(request)
     return render(request, 'article/about.html')
@@ -143,6 +151,7 @@ def message(request):
     change_info(request)
     return render(request, 'article/message.html')
 
+@cache_page(60*15)
 def detail(request, id):
     change_info(request)
     article = Article.objects.get(id=int(id))
